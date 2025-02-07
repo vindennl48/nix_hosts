@@ -12,6 +12,14 @@ let
     rev = "1da52dd49a127ad74486b135898da2cef8c62665";  # Get latest from https://status.nixos.org/
     sha256 = "sha256-KRwX9Z1XavpgeSDVM/THdFd6uH8rNm/6R+7kIbGa+2s="; # Get from error message when you try with wrong hash
   }) { config = config.nixpkgs.config; };
+
+  # Import unstable channel (replace REVISION with current unstable commit)
+  v2405 = import (pkgs.fetchFromGitHub {
+    owner = "NixOS";
+    repo = "nixpkgs";
+    rev = "b134951a4c9f3c995fd7be05f3243f8ecd65d798";  # Get latest from https://status.nixos.org/
+    sha256 = ""; # Get from error message when you try with wrong hash
+  }) { config = config.nixpkgs.config; };
 in
 
 {
@@ -37,7 +45,7 @@ in
      nh
      pyenv
      lmstudio39 # from overlay
-     # unstable.lmstudio
+     unstable.ollama-cuda
   ];
 
   programs = {
@@ -95,15 +103,16 @@ in
     xrdp = {
       enable = true;
       openFirewall = true;
-      defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
+      defaultWindowManager = "${pkgs.gnome-session}/bin/gnome-session"; # for 24.11+
+      # defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session"; # for 24.05
     };
 
-    # ollama = {
-    #   enable = true;
-    #   # loadModels = [];
-    #   acceleration = "cuda";
-    # };
-    # open-webui.enable = true;
+    ollama = {
+      enable = true;
+      # loadModels = [];
+      acceleration = "cuda";
+    };
+    open-webui.enable = true;
 
     # set up KVM guest tools
     qemuGuest.enable = true;
