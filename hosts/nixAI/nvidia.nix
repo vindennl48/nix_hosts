@@ -3,13 +3,20 @@
 {
 
   # OpenGL and hardware acceleration
+  # this is for 24.05
   hardware.opengl = {
     enable = true;
     driSupport = true;
     driSupport32Bit = true; # Required for 32-bit applications (e.g., Steam games)
   };
 
-# Load nvidia driver for Xorg and Wayland
+  # # this is for 24.11+
+  # # Enable OpenGL
+  # hardware.graphics = {
+  #   enable = true;
+  # };
+
+  # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];
   
   hardware.nvidia.modesetting.enable = false;
@@ -17,7 +24,7 @@
   hardware.nvidia.powerManagement.finegrained = false;
   hardware.nvidia.open = false;
   hardware.nvidia.nvidiaSettings = true;
-# Special config to load the latest (535 or 550) driver for the support of the 4070 SUPER
+  # Special config to load the latest (535 or 550) driver for the support of the 4070 SUPER
   hardware.nvidia.package = let 
   rcu_patch = pkgs.fetchpatch {
     url = "https://github.com/gentoo/gentoo/raw/c64caf53/x11-drivers/nvidia-drivers/files/nvidia-drivers-470.223.02-gpl-pfn_valid.patch";

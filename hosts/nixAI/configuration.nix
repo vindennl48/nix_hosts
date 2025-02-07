@@ -35,8 +35,9 @@ in
      less
      wget
      nh
+     pyenv
+     lmstudio39 # from overlay
      # unstable.lmstudio
-     lmstudio39
   ];
 
   programs = {
@@ -96,6 +97,13 @@ in
       openFirewall = true;
       defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session";
     };
+
+    # ollama = {
+    #   enable = true;
+    #   # loadModels = [];
+    #   acceleration = "cuda";
+    # };
+    # open-webui.enable = true;
 
     # set up KVM guest tools
     qemuGuest.enable = true;

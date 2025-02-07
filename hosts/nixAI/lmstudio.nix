@@ -14,7 +14,7 @@ let
   };
   src = fetchurl {
     url = "https://installers.lmstudio.ai/linux/x64/${version}-${rev}/LM-Studio-${version}-${rev}-x64.AppImage";
-    sha256 = "sha256-L3wYMqyjUL5pTz+/ujn76YYIfWzjqa3eoyNblU8/5hs=";  # Use nix-prefetch-url to get the correct hash
+    sha256 = "sha256-L3wYMqyjUL5pTz+/ujn76YYIfWzjqa3eoyNblU8/5hs="; # Get from error message when using an empty hash ""
   };
   appimageContents = appimageTools.extractType2 { inherit pname version src; };
 in
