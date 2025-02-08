@@ -25,14 +25,15 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      # ./nvidia.nix
-      ./hardware-configuration.nix
+      ./nvidia.nix
+      /etc/nixos/hardware-configuration.nix
     ];
 
   nixpkgs.overlays = [
     (self: super: {
       lmstudio39 = super.callPackage ./lmstudio.nix { };
     })
+    (import /etc/nixos/ollama-overlay.nix)
   ];
 
   # List packages installed in system profile. To search, run:
@@ -40,12 +41,15 @@ in
   environment.systemPackages = with pkgs; [
      neovim gcc xclip
      git
+     htop nvtop
      less
      wget
      nh
      pyenv
-     # lmstudio39 # from overlay
+     lmstudio39 # from overlay
      # unstable.ollama-cuda
+     # ollama-cuda-fix
+     ollama-fix
   ];
 
   programs = {
