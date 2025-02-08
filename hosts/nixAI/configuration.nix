@@ -25,7 +25,7 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./nvidia.nix
+      # ./nvidia.nix
       ./hardware-configuration.nix
     ];
 
@@ -44,8 +44,8 @@ in
      wget
      nh
      pyenv
-     lmstudio39 # from overlay
-     unstable.ollama-cuda
+     # lmstudio39 # from overlay
+     # unstable.ollama-cuda
   ];
 
   programs = {
@@ -107,12 +107,12 @@ in
       # defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session"; # for 24.05
     };
 
-    ollama = {
-      enable = true;
-      # loadModels = [];
-      acceleration = "cuda";
-    };
-    open-webui.enable = true;
+    # ollama = {
+    #   enable = true;
+    #   # loadModels = [];
+    #   acceleration = "cuda";
+    # };
+    # open-webui.enable = true;
 
     # set up KVM guest tools
     qemuGuest.enable = true;
