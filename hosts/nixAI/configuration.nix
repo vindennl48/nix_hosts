@@ -34,10 +34,9 @@ in
 
   nixpkgs.overlays = [
     (self: super: {
-      lmstudio39 = super.callPackage ./lmstudio.nix { };
+      lmstudio39 = super.callPackage /etc/nixos/lmstudio.nix { };
     })
     # (import /etc/nixos/ollama-overlay.nix)
-    l
   ];
 
   # List packages installed in system profile. To search, run:
@@ -62,16 +61,43 @@ in
 
   virtualisation.docker = {
     enable = true;
+    enableOnBoot = true;
     # enableNvidia = true; # above 24.05 use hardware.nvidia-container.toolkit below
   };
   # also need pkg.nvidia-docker
   hardware.nvidia-container-toolkit.enable = true; # 24.11+
 
-  # Bootloader.
+  # docker containers
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers = {
+      open-webui = {
+        image = "ghcr.io/open-webui/open-webui:ollama";
+        ports = ["0.0.0.0:3000:8080"];
+        environment = {
+          OLLAMA_MAX_LOADED_MODELS = "1";
+          OLLAMA_NUM_PARALLEL = "1";
+          OLLAMA_MAX_QUEUE = "1";
+        };
+        volumes = [
+          "/var/lib/ollama:/root/.ollama"
+          "/var/lib/open-webui:/app/backend/data"
+        ];
+        extraOptions = [ "--device=nvidia.com/gpu=all" ];
+        autoStart = true;
+      };
+    };
+  };
+
+  # Bootloader
   boot = {
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+    };
+
+    kernel = {
+      sysctl = { "vm.swappiness" = 0; };
     };
   };
 
