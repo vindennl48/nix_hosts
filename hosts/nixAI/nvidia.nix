@@ -14,6 +14,7 @@
   # Enable OpenGL
   hardware.graphics = {
     enable = true;
+    enable32Bit = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
@@ -25,6 +26,8 @@
   hardware.nvidia.open = false;
   hardware.nvidia.nvidiaSettings = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
 
 # # Below is to choose a specific Nvidia driver version, however, I couldnt get
 # # it to work on anything above 24.05

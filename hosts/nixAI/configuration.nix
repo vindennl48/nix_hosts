@@ -4,6 +4,9 @@
 
 { config, pkgs, ... }:
 
+# docker run -d -p 3000:8080 --device=nvidia.com/gpu=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
+# docker start open-webui
+
 let
   # Import unstable channel (replace REVISION with current unstable commit)
   unstable = import (pkgs.fetchFromGitHub {
@@ -13,7 +16,7 @@ let
     sha256 = "sha256-KRwX9Z1XavpgeSDVM/THdFd6uH8rNm/6R+7kIbGa+2s="; # Get from error message when you try with wrong hash
   }) { config = config.nixpkgs.config; };
 
-  # Import unstable channel (replace REVISION with current unstable commit)
+  # Import 24.05 channel (replace REVISION with current unstable commit)
   v2405 = import (pkgs.fetchFromGitHub {
     owner = "NixOS";
     repo = "nixpkgs";
@@ -25,7 +28,7 @@ in
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./nvidia.nix
+      /etc/nixos/nvidia.nix
       /etc/nixos/hardware-configuration.nix
     ];
 
@@ -33,7 +36,8 @@ in
     (self: super: {
       lmstudio39 = super.callPackage ./lmstudio.nix { };
     })
-    (import /etc/nixos/ollama-overlay.nix)
+    # (import /etc/nixos/ollama-overlay.nix)
+    l
   ];
 
   # List packages installed in system profile. To search, run:
@@ -45,17 +49,23 @@ in
      less
      wget
      nh
-     pyenv
-     lmstudio39 # from overlay
-     # unstable.ollama-cuda
-     # ollama-cuda-fix
-     ollama-fix
+     nvidia-docker
+     python311
+     # lmstudio39 # from overlay
+     # ollama-fix # use docker
   ];
 
   programs = {
     zsh.enable = true;
     firefox.enable = true;
   };
+
+  virtualisation.docker = {
+    enable = true;
+    # enableNvidia = true; # above 24.05 use hardware.nvidia-container.toolkit below
+  };
+  # also need pkg.nvidia-docker
+  hardware.nvidia-container-toolkit.enable = true; # 24.11+
 
   # Bootloader.
   boot = {
@@ -143,7 +153,7 @@ in
   users.users.mitch = {
     isNormalUser = true;
     description = "mitch";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "ollama" ];
     packages = with pkgs; [
     ];
     shell = pkgs.zsh;
