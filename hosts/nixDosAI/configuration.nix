@@ -42,11 +42,6 @@ in
       /etc/nixos/dotfiles.nix
     ];
 
-  # nixpkgs.overlays = [
-  #   # (self: super: { lmstudio39 = super.callPackage /etc/nixos/lmstudio.nix { }; })
-  #   (import /etc/nixos/ollama-overlay.nix)
-  # ];
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -57,14 +52,8 @@ in
      wget
      nh
      python312
-
-     # linuxPackages.nvidia_x11
-     # cudatoolkit
-
-     # nvidia-docker
-     # lmstudio39 # from overlay
-     # ollama-overlay # use docker
-     libGL ffmpeg # for open-webui
+     libGL
+     ffmpeg
   ];
 
   system.activationScripts.zshenv = let
@@ -100,36 +89,6 @@ in
 
   # needed for cuda stuffs
   hardware.nvidia-container-toolkit.enable = true; # 24.11+
-
-  ## SET UP AUTO DOCKER CONTAINER ##
-  # also make sure to install nvidia-docker in systemPackages
-  # virtualisation.docker = {
-  #   enable = true;
-  #   enableOnBoot = true;
-  #   # enableNvidia = true; # above 24.05 use hardware.nvidia-container.toolkit below
-  # };
-
-  # # docker containers
-  # virtualisation.oci-containers = {
-  #   backend = "docker";
-  #   containers = {
-  #     open-webui = {
-  #       image = "ghcr.io/open-webui/open-webui:ollama";
-  #       ports = ["0.0.0.0:3000:8080"];
-  #       environment = {
-  #         OLLAMA_MAX_LOADED_MODELS = "1";
-  #         OLLAMA_NUM_PARALLEL = "1";
-  #         # OLLAMA_MAX_QUEUE = "1";
-  #       };
-  #       volumes = [
-  #         "/var/lib/ollama:/root/.ollama"
-  #         "/var/lib/open-webui:/app/backend/data"
-  #       ];
-  #       extraOptions = [ "--device=nvidia.com/gpu=all" ];
-  #       autoStart = true;
-  #     };
-  #   };
-  # };
 
   # Bootloader
   boot = {
@@ -188,13 +147,6 @@ in
       defaultWindowManager = "${pkgs.gnome-session}/bin/gnome-session"; # for 24.11+
       # defaultWindowManager = "${pkgs.gnome.gnome-session}/bin/gnome-session"; # for 24.05
     };
-
-    # ollama = {
-    #   enable = true;
-    #   # loadModels = [];
-    #   acceleration = "cuda";
-    # };
-    # open-webui.enable = true;
 
     # set up KVM guest tools
     qemuGuest.enable = true;
