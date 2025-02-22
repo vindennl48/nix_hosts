@@ -57,11 +57,36 @@ in
      wget
      nh
      python312
+
+     # linuxPackages.nvidia_x11
+     # cudatoolkit
+
      # nvidia-docker
      # lmstudio39 # from overlay
      # ollama-overlay # use docker
      libGL ffmpeg # for open-webui
   ];
+
+  system.activationScripts.zshenv = let
+    username = "mitch";
+  in {
+    deps = [ "users" ];
+    text = ''
+      echo ""
+      echo ""
+      echo "========== Create ZSHENV =========="
+      if [ ! -f "/home/${username}/.zshenv" ]; then
+        echo "--> Adding zshenv.."
+        echo "source ~/p312/bin/activate" >> $HOME/.zshenv
+        echo "export LD_LIBRARY_PATH=/run/opengl-driver/lib:$LD_LIBRARY_PATH" >> $HOME/.zshenv
+      else
+        echo "--> zshenv Already Exists!"
+      fi
+      echo "========== Done Creating ZSHENV =========="
+      echo ""
+      echo ""
+    '';
+  };
 
   environment.sessionVariables = {
     # needed for open-webui compile
@@ -73,15 +98,17 @@ in
     firefox.enable = true;
   };
 
+  # needed for cuda stuffs
+  hardware.nvidia-container-toolkit.enable = true; # 24.11+
+
   ## SET UP AUTO DOCKER CONTAINER ##
+  # also make sure to install nvidia-docker in systemPackages
   # virtualisation.docker = {
   #   enable = true;
   #   enableOnBoot = true;
   #   # enableNvidia = true; # above 24.05 use hardware.nvidia-container.toolkit below
   # };
-  # # also need pkg.nvidia-docker
-  # hardware.nvidia-container-toolkit.enable = true; # 24.11+
-  #
+
   # # docker containers
   # virtualisation.oci-containers = {
   #   backend = "docker";
