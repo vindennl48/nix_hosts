@@ -2,10 +2,18 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
 
+# == NOTES ==
+## Docker for Open-WebUI
 # docker run -d -p 3000:8080 --device=nvidia.com/gpu=all -v ollama:/root/.ollama -v open-webui:/app/backend/data --name open-webui --restart always ghcr.io/open-webui/open-webui:ollama
 # docker start open-webui
+
+## Python Environments
+# python3.12 -m venv ~/myenv
+# source ~/myenv/bin/activate
+# deactivate
+
+{ config, pkgs, ... }:
 
 let
   # Import unstable channel (replace REVISION with current unstable commit)
@@ -30,8 +38,8 @@ in
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
+      /etc/nixos/nvidia.nix
       /etc/nixos/dotfiles.nix
-      # /etc/nixos/nvidia.nix
     ];
 
   # nixpkgs.overlays = [
@@ -48,8 +56,8 @@ in
      less
      wget
      nh
+     python312
      # nvidia-docker
-     # python311
      # lmstudio39 # from overlay
      # ollama-overlay # use docker
      libGL ffmpeg # for open-webui
