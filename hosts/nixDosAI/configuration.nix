@@ -30,13 +30,14 @@ in
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
-      /etc/nixos/nvidia.nix
+      /etc/nixos/dotfiles.nix
+      # /etc/nixos/nvidia.nix
     ];
 
-  nixpkgs.overlays = [
-    # (self: super: { lmstudio39 = super.callPackage /etc/nixos/lmstudio.nix { }; })
-    (import /etc/nixos/ollama-overlay.nix)
-  ];
+  # nixpkgs.overlays = [
+  #   # (self: super: { lmstudio39 = super.callPackage /etc/nixos/lmstudio.nix { }; })
+  #   (import /etc/nixos/ollama-overlay.nix)
+  # ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -48,9 +49,9 @@ in
      wget
      nh
      # nvidia-docker
-     python311
+     # python311
      # lmstudio39 # from overlay
-     ollama-overlay # use docker
+     # ollama-overlay # use docker
      libGL ffmpeg # for open-webui
   ];
 
@@ -117,7 +118,7 @@ in
   };
 
   networking = {
-    hostName = "nixAI"; # Define your hostname.
+    hostName = "nixDosAI"; # Define your hostname.
     networkmanager.enable = true;
   };
 
@@ -213,5 +214,5 @@ in
     LC_TIME = "en_US.UTF-8";
   };
 
-  system.stateVersion = "24.05"; # Did you read the comment?
+  system.stateVersion = "24.11"; # Did you read the comment?
 }
