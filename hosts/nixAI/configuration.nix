@@ -48,9 +48,10 @@ in
      wget
      nh
      # nvidia-docker
-     python312
+     python311
      # lmstudio39 # from overlay
      ollama-overlay # use docker
+     libGL ffmpeg # for open-webui
   ];
 
   environment.sessionVariables = {
