@@ -44,6 +44,10 @@
       if [ ! -d "${dotfilesDir}" ]; then
         echo "Cloning dotfiles repository..."
         ${gitBin} clone https://github.com/vindennl48/${dotfilesRepo} ${dotfilesDir}
+
+      	# Make sure to set correct user permissions
+        echo "➔ Setting Permission: $(dirname "$home_path")"
+      	chown -R ${username}:users "${dotfilesDir}")"
       fi
 
       # Function to manage dotfiles with backups
