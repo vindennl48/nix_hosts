@@ -12,12 +12,10 @@
   programs.zsh = {
     enable = true;
     enableCompletion = true;
-    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
   };
 
   system.activationScripts.dotfiles = let
-    username     = "${username}";  # REPLACE WITH YOUR USERNAME
     homeDir      = "/home/${username}";
     dotfilesRepo = "dotfiles_lite";
     dotfilesDir  = "${homeDir}/${dotfilesRepo}";
@@ -36,7 +34,7 @@
 
       	# Make sure to set correct user permissions
         echo "➔ Setting Permission: $(dirname "$home_path")"
-      	chown -R ${username}:users "${dotfilesDir}")"
+      	chown -R ${username}:users "${dotfilesDir}"
       fi
 
       # Function to manage dotfiles with backups
