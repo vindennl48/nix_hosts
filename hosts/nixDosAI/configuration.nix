@@ -77,6 +77,9 @@ in
       if [ ! -d "/home/${username}/p312" ]; then
         echo "--> Adding p312.."
         ${pyBin} -m venv /home/${username}/p312
+
+        echo "➔ Setting Permission: /home/${username}/p312"
+      	chown -R ${username}:users "/home/${username}/p312"
       else
         echo "--> p312 Already Exists!"
       fi

@@ -33,7 +33,7 @@
         ${gitBin} clone https://github.com/vindennl48/${dotfilesRepo} ${dotfilesDir}
 
       	# Make sure to set correct user permissions
-        echo "➔ Setting Permission: $(dirname "$home_path")"
+        echo "➔ Setting Permission: ${dotfilesDir}"
       	chown -R ${username}:users "${dotfilesDir}"
       fi
 
