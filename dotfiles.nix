@@ -3,16 +3,36 @@
 {
   environment.systemPackages = with pkgs; [
     git 
-    vim neovim gcc xclip
+    neovim gcc nodejs yarn xclip
     tmux
+    (nerdfonts.override { fonts = [ "IBMPlexMono" ]; })
   ];
 
+  programs = {
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+      # need to also set this in .zshrc
+      # if [ -n "${commands[fzf-share]}" ]; then
+      #   source "$(fzf-share)/key-bindings.zsh"
+      #   source "$(fzf-share)/completion.zsh"
+      # fi
+    };
+
+    zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+    };
+  };
+
   system.activationScripts.dotfiles = let
-    username = "mitch";  # REPLACE WITH YOUR USERNAME
-    homeDir = "/home/${username}";
+    username     = "mitch";  # REPLACE WITH YOUR USERNAME
+    homeDir      = "/home/${username}";
     dotfilesRepo = "dotfiles_lite";
-    dotfilesDir = "${homeDir}/${dotfilesRepo}";
-    gitBin = "${pkgs.git}/bin/git";  # Absolute path to Git binary
+    dotfilesDir  = "${homeDir}/${dotfilesRepo}";
+    gitBin       = "${pkgs.git}/bin/git";  # Absolute path to Git binary
   in {
     # Give this script a dependency on users being created
     deps = [ "users" ];
