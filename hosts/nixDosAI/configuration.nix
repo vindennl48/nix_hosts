@@ -99,8 +99,8 @@ in
       echo "========== Create ZSHENV =========="
       if [ ! -f "/home/${username}/.zshenv" ]; then
         echo "--> Adding zshenv.."
-        echo "source ~/p312/bin/activate" >> $HOME/.zshenv
-        echo "export LD_LIBRARY_PATH=/run/opengl-driver/lib:$LD_LIBRARY_PATH" >> $HOME/.zshenv
+        echo "source ~/p312/bin/activate" >> "/home/${username}/.zshenv"
+        echo "export LD_LIBRARY_PATH=/run/opengl-driver/lib:$LD_LIBRARY_PATH" >> "/home/${username}/.zshenv"
       else
         echo "--> zshenv Already Exists!"
       fi
