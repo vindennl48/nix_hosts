@@ -41,7 +41,7 @@ in
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       /etc/nixos/nvidia.nix
-      /etc/nixos/dotfiles.nix
+      (import /etc/nixos/dotfiles.nix { inherit username; })
     ];
 
   # List packages installed in system profile. To search, run:

@@ -1,4 +1,4 @@
-{ pkgs, config, lib, ... }:
+{ pkgs, config, lib, username, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -28,7 +28,7 @@
   };
 
   system.activationScripts.dotfiles = let
-    username     = "mitch";  # REPLACE WITH YOUR USERNAME
+    username     = "${username}";  # REPLACE WITH YOUR USERNAME
     homeDir      = "/home/${username}";
     dotfilesRepo = "dotfiles_lite";
     dotfilesDir  = "${homeDir}/${dotfilesRepo}";
