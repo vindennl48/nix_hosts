@@ -37,11 +37,16 @@ let
 in
 
 {
+  # Pass 'username' to all submodules (including dotfiles.nix)
+  _module.args = {
+    username = username;
+  };
+
   imports =
     [ # Include the results of the hardware scan.
       /etc/nixos/hardware-configuration.nix
       /etc/nixos/nvidia.nix
-      (import /etc/nixos/dotfiles.nix { username = username; })
+      /etc/nixos/dotfiles.nix
     ];
 
   # List packages installed in system profile. To search, run:
