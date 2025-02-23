@@ -5,26 +5,15 @@
     git 
     neovim gcc nodejs yarn xclip
     tmux
+    fzf
     (nerdfonts.override { fonts = [ "IBMPlexMono" ]; })
   ];
 
-  programs = {
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-      # need to also set this in .zshrc
-      # if [ -n "${commands[fzf-share]}" ]; then
-      #   source "$(fzf-share)/key-bindings.zsh"
-      #   source "$(fzf-share)/completion.zsh"
-      # fi
-    };
-
-    zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestion.enable = true;
-      syntaxHighlighting.enable = true;
-    };
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
   };
 
   system.activationScripts.dotfiles = let
