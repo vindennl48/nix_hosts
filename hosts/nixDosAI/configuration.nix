@@ -59,8 +59,8 @@ in
      wget
      nh
      python312
-     libGL
      ffmpeg
+     libGL glib
   ];
 
   programs.firefox.enable = true;
@@ -100,7 +100,8 @@ in
       if [ ! -f "/home/${username}/.zshenv" ]; then
         echo "--> Adding zshenv.."
         echo "source ~/p312/bin/activate" >> "/home/${username}/.zshenv"
-        echo 'export LD_LIBRARY_PATH="/run/opengl-driver/lib:$LD_LIBRARY_PATH"' >> "/home/${username}/.zshenv"
+        # echo 'export LD_LIBRARY_PATH="/run/opengl-driver/lib:$LD_LIBRARY_PATH"' >> "/home/${username}/.zshenv"
+      	chown ${username}:users "/home/${username}/.zshenv"
       else
         echo "--> zshenv Already Exists!"
       fi
@@ -112,7 +113,10 @@ in
 
   environment.sessionVariables = {
     # needed for open-webui compile
-    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib" +
+                      ":${pkgs.glib.out}/lib" +
+                      ":/run/current-system/sw/lib" +
+                      ":/run/opengl-driver/lib";
   };
 
   # needed for cuda stuffs
