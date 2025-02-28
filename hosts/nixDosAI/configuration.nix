@@ -61,6 +61,7 @@ in
      python312
      ffmpeg
      libGL glib
+     cudatoolkit_11
   ];
 
   programs.firefox.enable = true;
@@ -100,7 +101,7 @@ in
       if [ ! -f "/home/${username}/.zshenv" ]; then
         echo "--> Adding zshenv.."
         echo "source ~/p312/bin/activate" >> "/home/${username}/.zshenv"
-        # echo 'export LD_LIBRARY_PATH="/run/opengl-driver/lib:$LD_LIBRARY_PATH"' >> "/home/${username}/.zshenv"
+        echo "export PATH=$PATH:/home/mitch/bin"
       	chown ${username}:users "/home/${username}/.zshenv"
       else
         echo "--> zshenv Already Exists!"
@@ -115,9 +116,17 @@ in
     # needed for open-webui compile
     LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib" +
                       ":${pkgs.glib.out}/lib" +
+                      # ":${pkgs.cudaPackages.libcublas}/lib" +
+                      ":${pkgs.cudatoolkit_11.out}/lib" +
                       ":/run/current-system/sw/lib" +
-                      ":/run/opengl-driver/lib";
+                      ":/run/opengl-driver/lib" +
+                      ":/home/mitch/p312/lib/python3.12/site-packages/nvidia/cudnn/lib";
   };
+
+  # # adding to PATH
+  # environment.systemPath = [
+  #   "/home/mitch/bin"
+  # ];
 
   # needed for cuda stuffs
   hardware.nvidia-container-toolkit.enable = true; # 24.11+
